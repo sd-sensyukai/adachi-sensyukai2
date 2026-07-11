@@ -1,15 +1,29 @@
 (function () {
   'use strict';
 
-  // ===== Viewport height fix (lock on load, update on rotate only) =====
-  function setViewportHeight() {
-    var vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', vh + 'px');
+  // ===== Viewport & slideshow size lock (mobile swipe fix) =====
+  const slideshow = document.querySelector('.slideshow');
+  const mobileQuery = window.matchMedia('(max-width: 768px)');
+
+  function lockViewportSize() {
+    var height = window.innerHeight;
+    var width = window.innerWidth;
+    document.documentElement.style.setProperty('--vh', height * 0.01 + 'px');
+
+    if (!slideshow) return;
+
+    if (mobileQuery.matches) {
+      slideshow.style.width = width + 'px';
+      slideshow.style.height = height + 'px';
+    } else {
+      slideshow.style.width = '';
+      slideshow.style.height = '';
+    }
   }
 
-  setViewportHeight();
+  lockViewportSize();
   window.addEventListener('orientationchange', function () {
-    setTimeout(setViewportHeight, 150);
+    setTimeout(lockViewportSize, 150);
   });
 
   // ===== Slideshow =====
