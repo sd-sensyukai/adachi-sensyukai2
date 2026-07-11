@@ -1,15 +1,16 @@
 (function () {
   'use strict';
 
-  // ===== Viewport height fix (mobile address bar) =====
+  // ===== Viewport height fix (lock on load, update on rotate only) =====
   function setViewportHeight() {
     var vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', vh + 'px');
   }
 
   setViewportHeight();
-  window.addEventListener('resize', setViewportHeight);
-  window.addEventListener('orientationchange', setViewportHeight);
+  window.addEventListener('orientationchange', function () {
+    setTimeout(setViewportHeight, 150);
+  });
 
   // ===== Slideshow =====
   const slides = document.querySelectorAll('.slide');
